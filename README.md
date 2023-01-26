@@ -1,5 +1,5 @@
 # image-tag-editor
-basic image tag editor for adding stable diffusion tags for training datasets
+basic image tag editor for adding/editing stable diffusion tags for training datasets
 
 I made it to help with tagging my training images when creating embeddings or dreambooth models.
 
