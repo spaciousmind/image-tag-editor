@@ -9,14 +9,49 @@ from tkinter.filedialog import *
 import tkinter as tk
 import os
 
+import argparse
+import logging as log
+
 text = ""
+image_extensions = {"jpg", "png", "JPG"}
 
-# Open an image using the PIL library
-image_dir = Path.cwd()
+# get cmdline options
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--images',
+                    help="input directory with images dataset",
+                    default=Path.cwd())
+parser.add_argument('-e', '--extensions',
+                    help="add file extensions to load (default: %s)" % (" ".join(image_extensions)),
+                    default=image_extensions,
+                    nargs='+')
+parser.add_argument('-v', '--verbose',
+                    action='count',
+                    help="increase verbosity",
+                    default=0)
+args = parser.parse_args()
 
-image_files = [f for f in os.listdir(image_dir) if f.endswith('.png') or f.endswith('.jpg')]
+# init logging for verbosity
+# Level 	   value verbose
+# CRITICAL 	50
+# ERROR 	   40
+# WARNING 	30    0
+# INFO 	   20    1 -v
+# DEBUG 	   10    2 -vv
+# NOTSET 	0
+log_level = log.WARNING - 10 * args.verbose
+log.basicConfig(format="%(levelname)s: %(message)s", level=log_level)
+
+image_dir = args.images
+image_extensions = image_extensions.union(set(args.extensions))
+
+log.debug("Very Verbose output. level=%d" % (log_level))
+log.debug ("Will load files ending by %s" % (", ".join(image_extensions)))
+
+image_files = [f for f in os.listdir(image_dir) if f.endswith(tuple(image_extensions))]
 image_names = [file[:-4] for file in image_files]
 text_file_paths = [os.path.join(image_dir, image_file[:-4] + '.txt') for image_file in image_files]
+
+log.info ("Found %d images in %s" % (len (image_files), image_dir) )
 
 images = []
 for image_file in image_files:
@@ -58,7 +93,7 @@ def update_text_file(text, file_path):
 
 
 
-# Function to update the image displayed in the 
+# Function to update the image displayed in the
 def update_image():
     global current_image
     if current_image:
@@ -72,7 +107,7 @@ def update_image():
     else:
         text = ""
         create_text_file("", current_text_file)
-        print("created " + image_names[current_image_index] + ".txt")
+        log.info ("created " + image_names[current_image_index] + ".txt")
 
 
     img = img.resize((512, 768), Image.LANCZOS)
@@ -106,13 +141,13 @@ canvas.bind("<Next>", on_key_press)
 
 
 def load_text_file(file):
-    with open(file, "r") as f:  
+    with open(file, "r") as f:
         content = f.read()
     entry.insert(INSERT, content)
 
 def save_text_file(file):
     text = str(entry.get(1.0, END))
-    with open(file, "w") as f:  
+    with open(file, "w") as f:
         f.write(text)
 
 def clearFile():
