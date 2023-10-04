@@ -33,7 +33,7 @@ current_image_index = 0
 
 canvas = tk.Tk()
 canvas.grid()
-canvas.geometry("1448x768")
+# canvas.geometry("1448x768") # no predefined size, will take what's inside size
 canvas.title("tag editor")
 canvas.config(bg='white')
 
@@ -58,7 +58,7 @@ def update_text_file(text, file_path):
 
 
 
-# Function to update the image displayed in the 
+# Function to update the image displayed in the
 def update_image():
     global current_image
     if current_image:
@@ -74,8 +74,13 @@ def update_image():
         create_text_file("", current_text_file)
         print("created " + image_names[current_image_index] + ".txt")
 
+    # resize image, but keep ratio
+    width = 512
+    ratio = width / float(img.size[0])
+    height = int (float(img.size[1]) * ratio)
+    print ("resize image for display to %dx%d with ratio %.2f" % (width, height, ratio) )
 
-    img = img.resize((512, 768), Image.LANCZOS)
+    img = img.resize((width, height), Image.LANCZOS)
     img = ImageTk.PhotoImage(img)
 
 
@@ -106,13 +111,13 @@ canvas.bind("<Next>", on_key_press)
 
 
 def load_text_file(file):
-    with open(file, "r") as f:  
+    with open(file, "r") as f:
         content = f.read()
     entry.insert(INSERT, content)
 
 def save_text_file(file):
     text = str(entry.get(1.0, END))
-    with open(file, "w") as f:  
+    with open(file, "w") as f:
         f.write(text)
 
 def clearFile():
