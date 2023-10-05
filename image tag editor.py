@@ -127,7 +127,7 @@ def clearFile():
     entry.delete(1.0, END)
 
 def saveFileButton():
-    new_file = asksaveasfile(mode = 'w', filetype = [('text files', '.txt')])
+    new_file = asksaveasfile(mode = 'w', filetypes = [('text files', '.txt')])
     if new_file is None:
         return
     text = str(entry.get(1.0, END))
@@ -135,10 +135,10 @@ def saveFileButton():
     new_file.close()
 
 def openFileButton():
-    file = askopenfile(mode = 'r', filetype = [('text files', '*.txt')])
+    file = askopenfile(mode = 'r', filetypes = [('text files', '*.txt')])
     if file is not None:
         content = file.read()
-    entry.insert(INSERT, content)
+        entry.insert(INSERT, content)
 
 def clearFileButton():
     entry.delete(1.0, END)
