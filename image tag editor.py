@@ -30,22 +30,27 @@ current_image = None
 # Create a variable to keep track of the current image index
 current_image_index = 0
 
-
 canvas = tk.Tk()
 canvas.grid()
 # canvas.geometry("1448x768") # no predefined size, will take what's inside size
 canvas.title("tag editor")
 canvas.config(bg='white')
 
-frame = tk.Frame(canvas)
-frame.grid(row=0, column=0, sticky="nsew")
+# Create frame to hold the text editor and buttons
+text_frame = Frame(canvas, bg = "#1e1319")
+text_frame.grid(row=0, column=1, sticky="nsew")
 
+# label for image display
+label = Label(canvas)
+label.grid(row=0,column=0,sticky="nsew")
 
-# Create a bottom frame to hold the text editor and image
-text_frame = Frame(frame)
-text_frame.grid(row=1, column=1, sticky="ew")
-text_frame.grid_rowconfigure(0, weight=0)
-text_frame.grid_columnconfigure(1, weight=0)
+# make re-sizable
+canvas.rowconfigure(0, weight=1)
+canvas.columnconfigure(0, weight=0)
+canvas.columnconfigure(1, weight=1)
+
+text_frame.rowconfigure(0, weight=1)
+text_frame.columnconfigure(1, weight=1)
 
 
 def create_text_file(text, file_path):
@@ -83,9 +88,7 @@ def update_image():
     img = img.resize((width, height), Image.LANCZOS)
     img = ImageTk.PhotoImage(img)
 
-
-    label = Label(text_frame, image=img)
-    label.grid(row=0,column=0,sticky="nsew")
+    label.configure(image=img)
     label.image = img  # Keep a reference to the image
 
 
@@ -146,14 +149,12 @@ def saveAndExitButton():
     exit()
 
 
-
 # Create a top frame to hold the buttons
 button_frame = Frame(text_frame, bg="#1e1319")
-button_frame.grid(row=0, column=1, sticky="nsew")
-button_frame.grid_rowconfigure(0, weight=1)
-button_frame.grid_columnconfigure(1, weight=0)
-button_frame.grid_columnconfigure(2, weight=0)
-button_frame.grid_columnconfigure(3, weight=1)
+button_frame.grid(row=1, column=1, sticky="se")
+
+# for c in range(0,5):
+#     button_frame.columnconfigure(c, weight=1)
 
 b5 = Button(button_frame, text="  Save and Exit  ", bg = "#4f2d3f", command = saveAndExitButton)
 b4 = Button(button_frame, text="  Exit  ", bg = "#4f2d3f", command = exit)
@@ -161,14 +162,14 @@ b3 = Button(button_frame, text="  Clear  ", bg = "#4f2d3f", command = clearFileB
 b2 = Button(button_frame, text="  Save  ", bg = "#4f2d3f", command = saveFileButton)
 b1 = Button(button_frame, text="  Open  ", bg = "#4f2d3f", command = openFileButton)
 
-b5.grid(row=1, column=4, padx=20, pady=20, sticky="W")
-b4.grid(row=1, column=3, padx=20, pady=20, sticky="W")
-b3.grid(row=1, column=2, padx=20, pady=20, sticky="W")
-b2.grid(row=1, column=1, padx=20, pady=20, sticky="W")
-b1.grid(row=1, column=0, padx=(450, 20), pady=20, sticky="W")
+b5.grid(row=1, column=4, padx=20, pady=20, sticky="E")
+b4.grid(row=1, column=3, padx=20, pady=20, sticky="E")
+b3.grid(row=1, column=2, padx=20, pady=20, sticky="E")
+b2.grid(row=1, column=1, padx=20, pady=20, sticky="E")
+b1.grid(row=1, column=0, padx=20, pady=20, sticky="E")
 
-entry = Text(text_frame, wrap = WORD, bg = "#281b22", fg="#d8adc3", insertbackground="yellow", font = ("poppins", 15), padx=10, pady=10)
-entry.grid(row=0,column=1,sticky="nsew", padx=15, pady=(15, 60))
+entry = Text(text_frame, wrap = WORD, bg = "#281b22", fg="#d8adc3", insertbackground="yellow", font = ("poppins", 15))
+entry.grid(row=0,column=1,sticky="nsew", padx=10, pady=10)
 
 update_image()
 canvas.mainloop()

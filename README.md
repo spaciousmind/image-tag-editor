@@ -13,5 +13,6 @@ it will automatically save over the current text file when you hit page up or pa
 
 It's probably buggy so might wanna back up your files first in another directory.
 
-I've just hardcoded the display resolution to 512x768, cause that's what I was working with and I couldn't be bothered figuring out how to make it dynamic based on the images. If you can tell me how please do and I'll update it.
-Only been tested in windows 10, with python 3.11
+Only been tested in
+* windows 10, with python 3.11
+* ubuntu 22.04 with python 3.10
