@@ -162,7 +162,7 @@ b3 = Button(button_frame, text="  Clear  ", bg = "#4f2d3f", command = clearFileB
 b2 = Button(button_frame, text="  Save  ", bg = "#4f2d3f", command = saveFileButton)
 b1 = Button(button_frame, text="  Open  ", bg = "#4f2d3f", command = openFileButton)
 
-b5.grid(row=1, column=4, padx=20, pady=20, sticky="E")
+b5.grid(row=1, column=4, padx=10, pady=20, sticky="E")
 b4.grid(row=1, column=3, padx=20, pady=20, sticky="E")
 b3.grid(row=1, column=2, padx=20, pady=20, sticky="E")
 b2.grid(row=1, column=1, padx=20, pady=20, sticky="E")
